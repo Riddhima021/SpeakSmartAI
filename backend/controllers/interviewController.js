@@ -14,7 +14,7 @@ const startInterview = async (req, res) => {
       company,
       role,
       type,
-      difficulty
+      difficulty,
     );
 
     // Save Interview
@@ -32,7 +32,6 @@ const startInterview = async (req, res) => {
       message: "Interview created successfully",
       interview,
     });
-
   } catch (error) {
     console.error(error);
 
@@ -65,10 +64,7 @@ const evaluateInterviewAnswer = async (req, res) => {
       });
     }
 
-    const result = await evaluateAnswer(
-      currentQuestion.question,
-      answer
-    );
+    const result = await evaluateAnswer(currentQuestion.question, answer);
 
     currentQuestion.answer = answer;
     currentQuestion.score = result.score;
@@ -81,9 +77,28 @@ const evaluateInterviewAnswer = async (req, res) => {
       success: true,
       result,
     });
-
   } catch (error) {
     console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+const getUserInterviews = async (req, res) => {
+  try {
+    const interviews = await Interview.find({
+      user: req.user.id,
+    }).sort({ createdAt: -1 });
+
+    res.json({
+      success: true,
+      interviews,
+    });
+  } catch (error) {
+    console.log(error);
 
     res.status(500).json({
       success: false,
@@ -95,4 +110,5 @@ const evaluateInterviewAnswer = async (req, res) => {
 module.exports = {
   startInterview,
   evaluateInterviewAnswer,
+  getUserInterviews,
 };

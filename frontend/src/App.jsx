@@ -5,6 +5,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
+import StartInterview from "./pages/StartInterview";
+import Interview from "./pages/Interview";
 
 function App() {
   return (
@@ -21,6 +23,24 @@ function App() {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/start-interview"
+          element={
+            <ProtectedRoute>
+            <StartInterview />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/interview/:id"
+          element={
+            <ProtectedRoute>
+              <Interview />
             </ProtectedRoute>
           }
         />
