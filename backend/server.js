@@ -25,6 +25,9 @@ app.use("/api/resume", resumeRoutes);
 app.get("/", (req, res) => {
     res.send("SpeakSmart AI Backend Running 🚀");
 });
+app.get("/healthz", (req, res) => {
+    res.status(200).send("OK");
+});
 
 const PORT = process.env.PORT || 5000;
 
