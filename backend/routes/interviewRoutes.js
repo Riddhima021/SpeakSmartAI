@@ -8,6 +8,8 @@ const {
     startInterview,
     evaluateInterviewAnswer,
     getUserInterviews,
+    getInterviewResult,
+    getDashboardStats,
 } = require("../controllers/interviewController");
 
 router.post(
@@ -26,6 +28,18 @@ router.get(
     "/my-interviews",
     authMiddleware,
     getUserInterviews
+);
+
+router.get(
+  "/result/:id",
+  authMiddleware,
+  getInterviewResult
+);
+
+router.get(
+  "/dashboard-stats",
+  authMiddleware,
+  getDashboardStats
 );
 
 module.exports = router;

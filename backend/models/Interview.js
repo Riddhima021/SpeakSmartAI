@@ -2,41 +2,12 @@ const mongoose = require("mongoose");
 
 const questionSchema = new mongoose.Schema(
   {
-    questions: [
-      {
-        question: {
-          type: String,
-          required: true,
-        },
-
-        answer: {
-          type: String,
-          default: "",
-        },
-
-        score: {
-          type: Number,
-          default: 0,
-        },
-
-        feedback: {
-          type: String,
-          default: "",
-        },
-
-        idealAnswer: {
-          type: String,
-          default: "",
-        },
-      },
-    ],
-
-    answer: {
+    question: {
       type: String,
-      default: "",
+      required: true,
     },
 
-    feedback: {
+    answer: {
       type: String,
       default: "",
     },
@@ -45,10 +16,20 @@ const questionSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+
+    feedback: {
+      type: String,
+      default: "",
+    },
+
+    idealAnswer: {
+      type: String,
+      default: "",
+    },
   },
   {
     _id: false,
-  },
+  }
 );
 
 const interviewSchema = new mongoose.Schema(
@@ -71,7 +52,7 @@ const interviewSchema = new mongoose.Schema(
 
     type: {
       type: String,
-      enum: ["HR", "Technical", "Behavioral"],
+      enum: ["HR", "Technical", "Behavioral", "Mixed"],
       required: true,
     },
 
@@ -96,7 +77,7 @@ const interviewSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  },
+  }
 );
 
 module.exports = mongoose.model("Interview", interviewSchema);

@@ -7,6 +7,10 @@ import Dashboard from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import StartInterview from "./pages/StartInterview";
 import Interview from "./pages/Interview";
+import Result from "./pages/Result";
+import NotFound from "./pages/NotFound";
+import Profile from "./pages/Profile";
+import ResumeAnalyzer from "./pages/ResumeAnalyzer";
 
 function App() {
   return (
@@ -31,7 +35,7 @@ function App() {
           path="/start-interview"
           element={
             <ProtectedRoute>
-            <StartInterview />
+              <StartInterview />
             </ProtectedRoute>
           }
         />
@@ -44,6 +48,28 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="/result/:id"
+          element={
+            <ProtectedRoute>
+              <Result />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route path="/profile" element={<Profile />} />
+
+        <Route
+          path="/resume-analyzer"
+          element={
+            <ProtectedRoute>
+              <ResumeAnalyzer />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

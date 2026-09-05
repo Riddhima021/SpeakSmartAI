@@ -4,14 +4,8 @@ const jwt = require("jsonwebtoken");
 
 const registerUser = async (req, res) => {
   try {
-    const {
-      name,
-      email,
-      password,
-      targetRole,
-      graduationYear,
-      college,
-    } = req.body;
+    const { name, email, password, targetRole, graduationYear, college } =
+      req.body;
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
@@ -39,28 +33,31 @@ const registerUser = async (req, res) => {
     res.status(201).json({
       success: true,
       message: "User registered successfully",
-      user,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        targetRole: user.targetRole,
+        graduationYear: user.graduationYear,
+        college: user.college,
+      },
     });
-
   } catch (error) {
-
     console.error(error);
 
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
     });
-
   }
 };
 
 const loginUser = async (req, res) => {
   try {
-
     const { email, password } = req.body;
 
     // Check if email exists
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select("+password");
 
     if (!user) {
       return res.status(400).json({
@@ -87,7 +84,7 @@ const loginUser = async (req, res) => {
       process.env.JWT_SECRET,
       {
         expiresIn: "7d",
-      }
+      },
     );
 
     res.status(200).json({
@@ -101,16 +98,13 @@ const loginUser = async (req, res) => {
         role: user.role,
       },
     });
-
   } catch (error) {
-
     console.error(error);
 
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
     });
-
   }
 };
 

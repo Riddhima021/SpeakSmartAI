@@ -6,10 +6,12 @@ const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const interviewRoutes = require("./routes/interviewRoutes");
+const resumeRoutes = require("./routes/resumeRoutes");
+
 
 const app = express();
 
-console.log(process.env.MONGO_URI);
+// console.log(process.env.MONGO_URI);
 connectDB();
 
 app.use(cors());
@@ -17,6 +19,8 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/interviews", interviewRoutes);
+app.use("/api/resume", resumeRoutes);
+
 
 app.get("/", (req, res) => {
     res.send("SpeakSmart AI Backend Running 🚀");
