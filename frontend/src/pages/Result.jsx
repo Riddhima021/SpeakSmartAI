@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Navbar from "../components/Navbar";
 import { useNavigate, useParams } from "react-router-dom";
 import API from "../services/api";
 import ScoreChart from "../components/ScoreChart";
