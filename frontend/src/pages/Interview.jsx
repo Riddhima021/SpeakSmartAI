@@ -25,6 +25,7 @@ function Interview() {
   const [faceDetected, setFaceDetected] = useState(false);
   const [lookingAway, setLookingAway] = useState(false);
   const [warning, setWarning] = useState(false);
+  const [expression, setExpression] = useState("Neutral");
   const awayTimer = useRef(null);
   const noFaceFrames = useRef(0);
   const animationFrameRef = useRef(null);
@@ -105,6 +106,29 @@ function Interview() {
 
       const landmarks = results.faceLandmarks[0];
 
+      // Detect basic facial expression from MediaPipe blendshapes
+      if (results.faceBlendshapes?.length > 0) {
+        const categories = results.faceBlendshapes[0].categories;
+
+        const getScore = (name) =>
+          categories.find((item) => item.categoryName === name)?.score || 0;
+
+        const smileLeft = getScore("mouthSmileLeft");
+        const smileRight = getScore("mouthSmileRight");
+        const jawOpen = getScore("jawOpen");
+        const browInnerUp = getScore("browInnerUp");
+
+        if (smileLeft > 0.45 && smileRight > 0.45) {
+          setExpression("Smiling");
+        } else if (jawOpen > 0.45) {
+          setExpression("Surprised");
+        } else if (browInnerUp > 0.45) {
+          setExpression("Attentive");
+        } else {
+          setExpression("Neutral");
+        }
+      }
+
       // Eye center is much more stable than nose
       const leftEye = landmarks[33];
       const rightEye = landmarks[263];
@@ -136,6 +160,7 @@ function Interview() {
         setFaceDetected(false);
         setLookingAway(false);
         setWarning(false);
+        setExpression("No Face");
 
         clearTimeout(awayTimer.current);
         awayTimer.current = null;
@@ -299,6 +324,12 @@ function Interview() {
                 }`}
               >
                 {lookingAway ? "⚠ Looking Away" : "Looking Forward"}
+              </div>
+            )}
+
+            {faceDetected && (
+              <div className="absolute top-26 right-3 px-3 py-1 rounded-full bg-purple-600 text-white text-sm font-semibold shadow">
+                😊 {expression}
               </div>
             )}
           </div>
